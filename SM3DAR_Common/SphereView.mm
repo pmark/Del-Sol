@@ -84,7 +84,8 @@
 
 - (void) drawInGLContext {
   
-  glScalef (500, 500, 500);
+  CGFloat scalar = 10.0f;
+  glScalef (scalar, scalar, scalar);
   glRotatef (180, 1, 0, 0);
 
 // Use this rotation to correct the sphere.obj
@@ -109,7 +110,7 @@
 
 - (void) updateTexture {
   if (self.textureImage) {
-    NSLog(@"[PIZZASTREET] updating texture with %@", self.textureImage);
+    NSLog(@"[SphereView] updating texture with %@", self.textureImage);
     [texture replaceTextureWithImage:self.textureImage.CGImage];
   }
 }
@@ -119,9 +120,9 @@
 }
 
 - (void) updateImage:(UIImage*)img {
-  NSLog(@"[PIZZASTREET] resizing image from original: %f, %f", img.size.width, img.size.height);
+  NSLog(@"[SphereView] resizing image from original: %f, %f", img.size.width, img.size.height);
   img = [self resizeImage:img];
-  //NSLog(@"[PIZZASTREET] DONE: %f, %f", img.size.width, img.size.height);
+  //NSLog(@"[SphereView] DONE: %f, %f", img.size.width, img.size.height);
   self.textureImage = img;
   [self updateTexture];
 }
@@ -146,7 +147,7 @@
 
   artworkFetcher.url = url;
   [artworkFetcher fetch];    
-  NSLog(@"[PIZZASTREET] fetching image at %@", url);
+  NSLog(@"[SphereView] fetching image at %@", url);
 }  
 
 @end

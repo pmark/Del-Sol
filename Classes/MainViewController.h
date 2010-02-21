@@ -10,7 +10,10 @@
 #import "SM3DAR.h"
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, SM3DAR_Delegate> {
+  SM3DAR_Point *point;
 }
+
+@property (nonatomic, retain) SM3DAR_Point *point;
 
 - (IBAction)showInfo;
 

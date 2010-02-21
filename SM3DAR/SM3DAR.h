@@ -30,6 +30,7 @@ typedef struct
 - (void) setFocus:(BOOL)hasFocus;
 - (void) setSelectionDelegate:(NSObject<SM3DAR_Delegate>*)selectionDelegate;
 - (NSObject<SM3DAR_Delegate>*) selectionDelegate;
+- (void) translateX:(CGFloat)x y:(CGFloat)y z:(CGFloat)z;
 @end
 
 typedef NSObject<SM3DAR_PointProtocol> SM3DAR_Point;

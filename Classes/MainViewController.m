@@ -12,6 +12,7 @@
 
 @implementation MainViewController
 
+@synthesize point;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -31,12 +32,13 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];  
+  
 }
 
 - (void)loadPointsOfInterest {
 
   // create point
-  SM3DAR_Point *point = [[SM3DAR_Fixture alloc] init];
+  self.point = [[SM3DAR_Fixture alloc] init];
   
   // give point a view
   NSString *texture = nil; //@"sphere_texture1.png";
@@ -46,17 +48,13 @@
   // add point
   SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedSM3DAR_Controller]; 
   [sm3dar addPointOfInterest:point];
-  [point release];
   
+  [NSTimer scheduledTimerWithTimeInterval:0.10f target:self selector:@selector(tick) userInfo:nil repeats:YES];  
 }
 
-/*
- // Override to allow orientations other than the default portrait orientation.
- - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
- // Return YES for supported orientations
- return (interfaceOrientation == UIInterfaceOrientationPortrait);
- }
- */
+- (void)tick {
+  [point translateX:1.0f y:0 z:0];
+}
 
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
@@ -100,6 +98,7 @@
 
 
 - (void)dealloc {
+  [point release];
   [super dealloc];
 }
 
