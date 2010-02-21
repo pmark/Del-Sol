@@ -63,18 +63,21 @@
   
   if (self.geometry == nil)
   {
+    //NSLog(@"Loading geometry at %@", path);
     NSString* path = [[NSBundle mainBundle] pathForResource:@"sphere" ofType:@"obj"];
     self.geometry = [[Geometry newOBJFromResource:path] autorelease];
     self.geometry.cullFace = NO;
   }
   
-  if (self.texture == nil)
+  if (texture == nil && [textureName length] > 0)
   {
-    self.textureImage = [UIImage imageNamed:self.textureName];
-    self.texture = [[Texture newTextureFromImage:self.textureImage.CGImage] autorelease];
+    NSLog(@"Loading texture named %@", textureName);
+    self.textureImage = [UIImage imageNamed:textureName];
+    self.texture = [[Texture newTextureFromImage:textureImage.CGImage] autorelease];
   }
 
-  if (self.textureURL) {
+  if (self.textureURL) 
+  {
     [self fetchTextureImage:self.textureURL];
   }
 }
