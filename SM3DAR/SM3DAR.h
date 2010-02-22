@@ -23,11 +23,11 @@ typedef struct
 @protocol SM3DAR_Delegate;
 @protocol SM3DAR_PointProtocol
 @property (nonatomic, retain) UIView *view;
+@property (nonatomic, assign) Coord3D worldPoint;
+@property (assign) BOOL hasFocus;
+@property (assign) BOOL canReceiveFocus;
 - (Coord3D) worldCoordinate;
 - (SM3DAR_FocusView*) focusView;
-- (BOOL) canReceiveFocus;
-- (BOOL) hasFocus;
-- (void) setFocus:(BOOL)hasFocus;
 - (void) setSelectionDelegate:(NSObject<SM3DAR_Delegate>*)selectionDelegate;
 - (NSObject<SM3DAR_Delegate>*) selectionDelegate;
 - (void) translateX:(CGFloat)x y:(CGFloat)y z:(CGFloat)z;
@@ -41,6 +41,7 @@ typedef NSObject<SM3DAR_PointProtocol> SM3DAR_Point;
 -(void)loadPointsOfInterest;
 -(void)didChangeFocusToPOI:(SM3DAR_Point*)newPOI fromPOI:(SM3DAR_Point*)oldPOI;
 -(void)didChangeSelectionToPOI:(SM3DAR_Point*)newPOI fromPOI:(SM3DAR_Point*)oldPOI;
+-(void)didChangeOrientationYaw:(CGFloat)yaw pitch:(CGFloat)pitch roll:(CGFloat)roll;
 @end
 
 @interface SM3DAR_Controller : UIViewController <UIAccelerometerDelegate, CLLocationManagerDelegate, MKMapViewDelegate> {
