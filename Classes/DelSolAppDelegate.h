@@ -8,7 +8,7 @@
 
 @class MainViewController;
 
-@interface PointAndTiltAppDelegate : NSObject <UIApplicationDelegate> {
+@interface DelSolAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
     MainViewController *mainViewController;
 }
