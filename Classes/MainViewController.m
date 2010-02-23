@@ -14,6 +14,12 @@
 #define BTN_MODE_MOVE @"Moving"
 #define BTN_MODE_VIEW @"Viewing"
 
+#define SJ_PI 3.14159265359f
+#define SJ_RAD2DEG 180.0f/SJ_PI
+#define SJ_DEG2RAD SJ_PI/180.0f
+
+#define MAX_SPEED 12.0f
+
 @implementation MainViewController
 
 @synthesize point, positiveBar, negativeBar, dpad;
@@ -55,6 +61,7 @@
     @"RoundedLabelMarkerView", @"view_class_name",
     [NSNumber numberWithDouble:lat], @"latitude",
     [NSNumber numberWithDouble:lon], @"longitude",
+    sm3dar.currentLocation.altitude, @"altitude",
     nil];
 
   SM3DAR_PointOfInterest *poi = [[sm3dar initPointOfInterest:poiProperties] autorelease];    
@@ -65,17 +72,9 @@
 
 - (void)loadPointsOfInterest {
 
-  // create point
-  self.point = [[SM3DAR_Fixture alloc] init];
-  
-  // give point a view
-  NSString *texture = nil; //@"sphere_texture1.png";
-  SphereView *sphereView = [[SphereView alloc] initWithTextureNamed:texture];
-  point.view = sphereView;  
 
   // add point
   SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedSM3DAR_Controller]; 
-  [sm3dar addPointOfInterest:point];
   
   CLLocationCoordinate2D currentLoc = [sm3dar currentLocation].coordinate;
   CLLocationDegrees lat=currentLoc.latitude;
@@ -85,6 +84,15 @@
   [self addPOI:@"S" latitude:(lat-0.01f) longitude:lon canReceiveFocus:NO];
   [self addPOI:@"E" latitude:lat longitude:(lon+0.01f) canReceiveFocus:NO];
   [self addPOI:@"W" latitude:lat longitude:(lon-0.01f) canReceiveFocus:NO];
+
+  // create point
+  self.point = [[SM3DAR_Fixture alloc] init];
+  
+  // give point a view
+  NSString *texture = nil; //@"sphere_texture1.png";
+  SphereView *sphereView = [[SphereView alloc] initWithTextureNamed:texture];
+  point.view = sphereView;  
+  [sm3dar addPointOfInterest:point];
   
   [NSTimer scheduledTimerWithTimeInterval:0.10f target:self selector:@selector(moveObject) userInfo:nil repeats:YES];  
 }
@@ -288,7 +296,15 @@ static CGPoint applyVelocity(CGPoint velocity, CGPoint position, float delta){
 #pragma mark -
 
 - (void) updateJoystick {
-  [self.dpad updateThumbPosition];
+  [dpad updateThumbPosition];
+  
+  CGFloat xspeed = dpad.velocity.x * MAX_SPEED;
+  CGFloat yspeed = dpad.velocity.y * MAX_SPEED;
+  
+  if (abs(xspeed) > 0.0 || abs(yspeed) > 0.0) {
+    [point translateX:xspeed y:-yspeed z:0];
+    point.view.transform = CGAffineTransformRotate(point.view.transform, (SJ_DEG2RAD*10));
+  }
 }
 
 @end

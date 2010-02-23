@@ -13,7 +13,7 @@
 @implementation RoundedLabelMarkerView
 
 - (void) buildView {
-  NSInteger fontSize = 48;
+  NSInteger fontSize = 18;
   UILabel *label = [[UILabel alloc] init];
   label.text = poi.title;
   label.font = [UIFont boldSystemFontOfSize:fontSize];
@@ -31,7 +31,6 @@
   [l setCornerRadius:7.0];
   [l setBorderWidth:2.0];
   [l setBorderColor:[[UIColor whiteColor] CGColor]];
-
 }
 
 - (void) didReceiveFocus {

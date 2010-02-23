@@ -44,6 +44,12 @@ deadRadius;
 	[super dealloc];
 }
 
+- (CGPoint) endPoint {
+  CGFloat w = self.bounds.size.width;
+  CGFloat h = self.bounds.size.height;
+  return CGPointMake(-w/2, -h/2);
+}
+
 - (CGPoint) centerPoint {
   CGFloat w = self.bounds.size.width;
   CGFloat h = self.bounds.size.height;
@@ -65,9 +71,7 @@ deadRadius;
 	float dSq = dx * dx + dy * dy;
   
 	if (dSq <= deadRadiusSq) {
-		velocity = CGPointZero;
-		degrees = 0.0f;
-		stickPosition = CGPointZero;
+    [self resetJoystick];
 		return;
 	}
   
@@ -101,11 +105,11 @@ deadRadius;
   CGFloat h = self.bounds.size.height /2;
 	stickPosition = CGPointMake(dx+w, dy+h);
 
-  NSString *msg = [NSString stringWithFormat:@"vel: %f, %f\nstk: %i, %i\ndeg: %i", 
-      velocity.x, velocity.y,
-      (int)dx, (int)dy,
-      (int)degrees];
-  [[SM3DAR_Controller sharedSM3DAR_Controller] debug:msg];
+//  NSString *msg = [NSString stringWithFormat:@"vel: %f, %f\nstk: %i, %i\ndeg: %i", 
+//      velocity.x, velocity.y,
+//      (int)dx, (int)dy,
+//      (int)degrees];
+//  [[SM3DAR_Controller sharedSM3DAR_Controller] debug:msg];
 }
 
 - (void) setJoystickRadius:(float)r
@@ -127,10 +131,10 @@ deadRadius;
 }
 
 - (void)resetJoystick {
-  NSLog(@"RESET JOYSTICK TO: %f, %f", self.center.x, self.center.y);  
-//  degrees = 0.0f;
-//  velocity = CGPointZero;
-//  thumb.center = self.center;
+  //NSLog(@"RESET JOYSTICK TO: %f, %f", self.center.x, self.center.y);  
+  degrees = 0.0f;
+  velocity = CGPointZero;
+  stickPosition = thumb.center = [self centerPoint];
   //[self performSelector:@selector(hideThumb) withObject:nil afterDelay:THUMB_HIDE_DELAY];
 }
 
@@ -189,16 +193,10 @@ deadRadius;
 //  [[SM3DAR_Controller sharedSM3DAR_Controller] debug:msg];
 
   return difference;
-
-
-
-//  return CGPointMake(location.x - , location.y);  
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-  NSLog(@"[Joystick] touchesBegan");
   [Joystick cancelPreviousPerformRequestsWithTarget:self];
-  thumb.hidden = NO;
   UITouch *touch = [touches anyObject];
 	CGPoint location = [self centeredTouchLocation:touch];
 
@@ -207,6 +205,7 @@ deadRadius;
 		return;
 
 	} else {
+    thumb.hidden = NO;
 		float dSq = location.x*location.x + location.y*location.y;
 		if(joystickRadiusSq > dSq){
 			[self updateVelocity:location];
@@ -224,8 +223,7 @@ deadRadius;
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-	CGPoint location = [self centerPoint];
-	[self updateVelocity:location];
+	[self resetJoystick];
 }
 
 - (void) hideThumb {
