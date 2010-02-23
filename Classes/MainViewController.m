@@ -16,7 +16,7 @@
 
 @implementation MainViewController
 
-@synthesize point, positiveBar, negativeBar;
+@synthesize point, positiveBar, negativeBar, dpad;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -33,6 +33,10 @@
   sm3dar.delegate = self;
   [self.view addSubview:sm3dar.view];  
   [self.view sendSubviewToBack:sm3dar.view];
+  
+  self.dpad = [[Joystick alloc] initWithBackground:[UIImage imageNamed:@"128_white.png"]];
+  dpad.center = CGPointMake(160, 406);
+  [self.view addSubview:dpad];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -164,6 +168,7 @@
   [point release];
   [positiveBar release];
   [negativeBar release];
+  [dpad release];
   [super dealloc];
 }
 
@@ -255,5 +260,28 @@
   }
 }
 
+#pragma mark Joystick
+
+//function to apply a velocity to a position with delta
+static CGPoint applyVelocity(CGPoint velocity, CGPoint position, float delta){
+	return CGPointMake(position.x + velocity.x * delta, position.y + velocity.y * delta);
+}
+
+/*
+-(void)joystickTick:(float)dt {
+	[self applyJoystick:leftJoystick toNode:leftPlayer forTimeDelta:dt];
+	[self applyJoystick:rightJoystick toNode:rightPlayer forTimeDelta:dt];
+}
+
+-(void)applyJoystick:(Joystick *)aJoystick toNode:(CCNode *)aNode forTimeDelta:(float)dt {
+	// you can create a velocity specific to the node if you wanted, just supply a different multiplier
+	// which will allow you to do a parallax scrolling of sorts
+	CGPoint scaledVelocity = ccpMult(aJoystick.velocity, 480.0f); 
+  
+	// apply the scaled velocity to the position over delta
+	aNode.position = applyVelocity(scaledVelocity, aNode.position, dt);
+}
+*/
+#pragma mark -
 
 @end

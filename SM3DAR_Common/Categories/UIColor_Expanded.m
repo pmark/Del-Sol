@@ -1,4 +1,4 @@
-#import "UIColor-Expanded.h"
+#import "UIColor_Expanded.h"
 
 /*
  

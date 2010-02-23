@@ -9,6 +9,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import "FlipsideViewController.h"
 #import "SM3DAR.h"
+#import "Dpad.h"
+#import "Joystick.h"
 
 typedef enum {
   MoveDirectionNeither,
@@ -24,11 +26,13 @@ typedef enum {
   NSInteger moveAxis;
   IBOutlet UISegmentedControl *positiveBar;
   IBOutlet UISegmentedControl *negativeBar;
+  Joystick *dpad;
 }
 
 @property (nonatomic, retain) SM3DAR_Point *point;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *positiveBar;
 @property (nonatomic, retain) IBOutlet UISegmentedControl *negativeBar;
+@property (nonatomic, retain) Joystick *dpad;
 
 - (IBAction)showInfo;
 - (IBAction)toggleMode:(UIButton*)button;
