@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface CGPointUtil {
+@interface CGPointUtil : NSObject {
 }
 
 + (CGPoint) multiply:(CGPoint)p s:(CGFloat)s;

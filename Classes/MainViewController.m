@@ -37,6 +37,9 @@
   self.dpad = [[Joystick alloc] initWithBackground:[UIImage imageNamed:@"128_white.png"]];
   dpad.center = CGPointMake(160, 406);
   [self.view addSubview:dpad];
+  NSLog(@"Joystick: %@", dpad);
+  
+  [NSTimer scheduledTimerWithTimeInterval:0.10f target:self selector:@selector(updateJoystick) userInfo:nil repeats:YES];    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -98,10 +101,10 @@
   return speed;
 }
 
+/*
 -(void)didChangeOrientationYaw:(CGFloat)yaw pitch:(CGFloat)pitch roll:(CGFloat)roll {
   SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedSM3DAR_Controller];
   if (!moveMode) {
-    [sm3dar debug:@""];
     return;
   }
   
@@ -122,7 +125,7 @@
   Coord3D c = point.worldPoint;
   [sm3dar debug:[NSString stringWithFormat:@"X: %i \nY: %i \nZ: %i", (int)c.x, (int)c.y, (int)c.z]];
 }
-
+*/
 
 - (void)flipsideViewControllerDidFinish:(FlipsideViewController *)controller {
   
@@ -283,5 +286,9 @@ static CGPoint applyVelocity(CGPoint velocity, CGPoint position, float delta){
 }
 */
 #pragma mark -
+
+- (void) updateJoystick {
+  [self.dpad updateThumbPosition];
+}
 
 @end
