@@ -14,11 +14,12 @@
 #define BTN_MODE_MOVE @"Moving"
 #define BTN_MODE_VIEW @"Viewing"
 
-#define SJ_PI 3.14159265359f
-#define SJ_RAD2DEG 180.0f/SJ_PI
-#define SJ_DEG2RAD SJ_PI/180.0f
+#define DS_PI 3.14159265359f
+#define DS_RAD2DEG 180.0f/DS_PI
+#define DS_DEG2RAD DS_PI/180.0f
 
-#define MAX_SPEED 12.0f
+#define MAX_SPEED 100.0f
+#define TEXTURE_NAME @"sphere_texture1.png"
 
 @implementation MainViewController
 
@@ -303,8 +304,25 @@ static CGPoint applyVelocity(CGPoint velocity, CGPoint position, float delta){
   
   if (abs(xspeed) > 0.0 || abs(yspeed) > 0.0) {
     [point translateX:xspeed y:-yspeed z:0];
-    point.view.transform = CGAffineTransformRotate(point.view.transform, (SJ_DEG2RAD*10));
+    point.view.transform = CGAffineTransformRotate(point.view.transform, (DS_DEG2RAD*10));
   }
 }
+
+- (void) logoWasTapped {
+  NSLog(@"toggling texture");
+  
+  SphereView *sphereView = (SphereView*)point.view;
+
+  if (sphereView.textureImage) {
+    // make wireframe
+    [sphereView loadWireframe];
+    
+  } else {
+    // add texture
+    [sphereView setTextureWithImageNamed:TEXTURE_NAME];
+  }
+
+}
+
 
 @end

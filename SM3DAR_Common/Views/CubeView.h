@@ -1,16 +1,14 @@
 //
-//  SphereView.m
+//  CubeView.h
 //
-//  Created by Josh Aller 1/21/10.
+//  Created by P. Mark Anderson 2/23/10.
 //  Copyright 2010 Spot Metrix, Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "TexturedGeometryView.h"
 
-@interface SphereView : TexturedGeometryView {
+@interface CubeView : TexturedGeometryView {
 }
-
-- (void) loadWireframe;
 
 @end

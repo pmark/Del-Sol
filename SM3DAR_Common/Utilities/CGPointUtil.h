@@ -1,9 +1,9 @@
 //
 //  CGPoint_SMCommon.h
-//  DelSol
+//  Panoramic
 //
 //  Created by P. Mark Anderson on 2/22/10.
-//  Copyright 2010 Bordertown Labs, LLC. All rights reserved.
+//  Copyright 2010 Spot Metrix, Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
