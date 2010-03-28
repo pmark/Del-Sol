@@ -23,6 +23,7 @@
 		4D362E411132F3B800B4724A /* 64_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D362E3E1132F3B800B4724A /* 64_white.png */; };
 		4D362E421132F3B800B4724A /* 128_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D362E3F1132F3B800B4724A /* 128_white.png */; };
 		4D362F87113314D700B4724A /* 84_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D362F86113314D700B4724A /* 84_white.png */; };
+		4D479708115F443B00F5751B /* sun2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D479707115F443B00F5751B /* sun2.png */; };
 		4D59E6631130B28B00AD04A7 /* 3dar.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4D59E65A1130B28B00AD04A7 /* 3dar.plist */; };
 		4D59E6641130B28B00AD04A7 /* 3dar_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D59E65B1130B28B00AD04A7 /* 3dar_logo.png */; };
 		4D59E6651130B28B00AD04A7 /* 3dar_marker_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D59E65C1130B28B00AD04A7 /* 3dar_marker_icon1.png */; };
@@ -90,7 +91,7 @@
 		4D5ABF9F114325C200F689D2 /* RoundedLabelMarkerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ABF6B114325C200F689D2 /* RoundedLabelMarkerView.m */; };
 		4D5ABFA0114325C200F689D2 /* SphereView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ABF6D114325C200F689D2 /* SphereView.mm */; };
 		4D5ABFA1114325C200F689D2 /* TexturedGeometryView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ABF6F114325C200F689D2 /* TexturedGeometryView.mm */; };
-		4D9BD7271130CC730088E380 /* SM3DARLibary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D9BD7261130CC730088E380 /* SM3DARLibary.a */; };
+		4DDFD221115F4F6C00F7831B /* SM3DARLibary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDFD220115F4F6C00F7831B /* SM3DARLibary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -117,6 +118,7 @@
 		4D362E3E1132F3B800B4724A /* 64_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 64_white.png; sourceTree = "<group>"; };
 		4D362E3F1132F3B800B4724A /* 128_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 128_white.png; sourceTree = "<group>"; };
 		4D362F86113314D700B4724A /* 84_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 84_white.png; sourceTree = "<group>"; };
+		4D479707115F443B00F5751B /* sun2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sun2.png; sourceTree = "<group>"; };
 		4D59E65A1130B28B00AD04A7 /* 3dar.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = 3dar.plist; sourceTree = "<group>"; };
 		4D59E65B1130B28B00AD04A7 /* 3dar_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3dar_logo.png; sourceTree = "<group>"; };
 		4D59E65C1130B28B00AD04A7 /* 3dar_marker_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3dar_marker_icon1.png; sourceTree = "<group>"; };
@@ -253,7 +255,7 @@
 		4D5ABF6D114325C200F689D2 /* SphereView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SphereView.mm; sourceTree = "<group>"; };
 		4D5ABF6E114325C200F689D2 /* TexturedGeometryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TexturedGeometryView.h; sourceTree = "<group>"; };
 		4D5ABF6F114325C200F689D2 /* TexturedGeometryView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TexturedGeometryView.mm; sourceTree = "<group>"; };
-		4D9BD7261130CC730088E380 /* SM3DARLibary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = SM3DARLibary.a; path = "../../SM3DARLibrary/SM3DARLibary/build/Debug-iphoneos/SM3DARLibary.a"; sourceTree = SOURCE_ROOT; };
+		4DDFD220115F4F6C00F7831B /* SM3DARLibary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = SM3DARLibary.a; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* DelSol-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DelSol-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -269,8 +271,8 @@
 				4D59E67A1130B33C00AD04A7 /* OpenGLES.framework in Frameworks */,
 				4D59E67C1130B33C00AD04A7 /* QuartzCore.framework in Frameworks */,
 				4D59E68A1130B3C400AD04A7 /* MapKit.framework in Frameworks */,
-				4D9BD7271130CC730088E380 /* SM3DARLibary.a in Frameworks */,
 				4D5ABF8A114325C200F689D2 /* libGHUnitIPhone2_1.a in Frameworks */,
+				4DDFD221115F4F6C00F7831B /* SM3DARLibary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +347,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4D479707115F443B00F5751B /* sun2.png */,
 				4D362E3D1132F3B800B4724A /* DPad_BG.png */,
 				4D362E3E1132F3B800B4724A /* 64_white.png */,
 				4D362F86113314D700B4724A /* 84_white.png */,
@@ -376,7 +379,7 @@
 		4D59E6591130B28B00AD04A7 /* SM3DAR */ = {
 			isa = PBXGroup;
 			children = (
-				4D9BD7261130CC730088E380 /* SM3DARLibary.a */,
+				4DDFD220115F4F6C00F7831B /* SM3DARLibary.a */,
 				4D59E6CE1130B43400AD04A7 /* SM3DAR_keys.txt */,
 				4D59E6CF1130B43400AD04A7 /* bubble1.png */,
 				4D59E6D01130B43400AD04A7 /* compass_rose.png */,
@@ -743,6 +746,7 @@
 				4D5ABF78114325C200F689D2 /* sphere_texture1.png in Resources */,
 				4D5ABF8B114325C200F689D2 /* RunTests.sh in Resources */,
 				4D5ABF8C114325C200F689D2 /* CREDITS in Resources */,
+				4D479708115F443B00F5751B /* sun2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

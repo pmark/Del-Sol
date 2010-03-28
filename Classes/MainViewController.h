@@ -12,30 +12,19 @@
 #import "Dpad.h"
 #import "Joystick.h"
 
-typedef enum {
-  MoveDirectionNeither,
-  MoveDirectionPositive,
-  MoveDirectionNegative
-} MoveDirection;
-
 
 @interface MainViewController : UIViewController <FlipsideViewControllerDelegate, SM3DAR_Delegate, CLLocationManagerDelegate> {
-  SM3DAR_Point *point;
-  BOOL moveMode;
-  MoveDirection moveDirection;
-  NSInteger moveAxis;
-  IBOutlet UISegmentedControl *positiveBar;
-  IBOutlet UISegmentedControl *negativeBar;
-  Joystick *dpad;
+    SM3DAR_Point *point;
+    SM3DAR_Point *sun;
+    BOOL moveMode;
+    Joystick *joystick;
 }
 
 @property (nonatomic, retain) SM3DAR_Point *point;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *positiveBar;
-@property (nonatomic, retain) IBOutlet UISegmentedControl *negativeBar;
-@property (nonatomic, retain) Joystick *dpad;
+@property (nonatomic, retain) SM3DAR_Point *sun;
+@property (nonatomic, retain) Joystick *joystick;
 
 - (IBAction)showInfo;
 - (IBAction)toggleMode:(UIButton*)button;
-- (void)moveOnAxis:(NSInteger)axis direction:(MoveDirection)direction;
 
 @end

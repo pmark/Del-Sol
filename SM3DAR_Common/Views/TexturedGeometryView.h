@@ -11,14 +11,14 @@
 
 
 @interface TexturedGeometryView : SM3DAR_PointView {
-  double zrot;
-  UIColor *color;
-  Geometry *geometry;
-  Texture *texture;
-  NSString *textureName;
-  NSURL *textureURL;
-  UIImage *textureImage;
-  AsyncArtworkFetcher *artworkFetcher;
+    double zrot;
+    UIColor *color;
+    Geometry *geometry;
+    Texture *texture;
+    NSString *textureName;
+    NSURL *textureURL;
+    UIImage *textureImage;
+    AsyncArtworkFetcher *artworkFetcher;
 }
 
 @property (nonatomic) double zrot;
@@ -32,6 +32,7 @@
 
 - (id) initWithTextureNamed:(NSString*)name;
 - (id) initWithTextureURL:(NSURL*)url;
+- (void) setupGeometryAndTexture;
 - (void) setTextureWithImageNamed:(NSString*)imgName;
 - (void) drawInGLContext;
 - (void) updateTexture;
