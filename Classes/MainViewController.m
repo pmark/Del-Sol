@@ -39,7 +39,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedSM3DAR_Controller];
+    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController];
     sm3dar.delegate = self;
     [self.view addSubview:sm3dar.view];  
     [self.view sendSubviewToBack:sm3dar.view];
@@ -57,7 +57,7 @@
 }
 
 - (SM3DAR_PointOfInterest*)addPOI:(NSString*)title latitude:(CLLocationDegrees)lat longitude:(CLLocationDegrees)lon  canReceiveFocus:(BOOL)canReceiveFocus {
-    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedSM3DAR_Controller];
+    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController];
     NSDictionary *poiProperties = [NSDictionary dictionaryWithObjectsAndKeys: 
                                    title, @"title",
                                    @"", @"subtitle",
@@ -83,7 +83,7 @@
 }
 
 - (SM3DAR_Fixture*)sphereAtCoordinate:(Coord3D)coord textureName:(NSString*)textureName {
-    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedSM3DAR_Controller]; 
+    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController]; 
 
     // create point
     SM3DAR_Fixture *sphere = [self fixtureAtCoordinate:coord];
@@ -100,7 +100,7 @@
 
 - (void)loadPointsOfInterest {
     // add point
-    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedSM3DAR_Controller]; 
+    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController]; 
     
     CLLocationCoordinate2D currentLoc = [sm3dar currentLocation].coordinate;
     CLLocationDegrees lat=currentLoc.latitude;
@@ -138,7 +138,7 @@
 
 /*
  -(void)didChangeOrientationYaw:(CGFloat)yaw pitch:(CGFloat)pitch roll:(CGFloat)roll {
- SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedSM3DAR_Controller];
+ SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController];
  if (!moveMode) {
  return;
  }

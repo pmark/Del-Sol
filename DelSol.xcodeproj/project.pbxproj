@@ -19,6 +19,7 @@
 		289233A70DB2D0840083E9F9 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A50DB2D0840083E9F9 /* MainView.m */; };
 		289233AE0DB2D0DB0083E9F9 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A90DB2D0DB0083E9F9 /* MainViewController.m */; };
 		289233B00DB2D0DB0083E9F9 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */; };
+		4D0ED26B1176700D003F2C04 /* lib3DAR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0ED26A1176700D003F2C04 /* lib3DAR.a */; };
 		4D362E401132F3B800B4724A /* DPad_BG.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D362E3D1132F3B800B4724A /* DPad_BG.png */; };
 		4D362E411132F3B800B4724A /* 64_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D362E3E1132F3B800B4724A /* 64_white.png */; };
 		4D362E421132F3B800B4724A /* 128_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D362E3F1132F3B800B4724A /* 128_white.png */; };
@@ -91,7 +92,6 @@
 		4D5ABF9F114325C200F689D2 /* RoundedLabelMarkerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ABF6B114325C200F689D2 /* RoundedLabelMarkerView.m */; };
 		4D5ABFA0114325C200F689D2 /* SphereView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ABF6D114325C200F689D2 /* SphereView.mm */; };
 		4D5ABFA1114325C200F689D2 /* TexturedGeometryView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ABF6F114325C200F689D2 /* TexturedGeometryView.mm */; };
-		4DDFD221115F4F6C00F7831B /* SM3DARLibary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DDFD220115F4F6C00F7831B /* SM3DARLibary.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -114,6 +114,7 @@
 		289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlipsideViewController.m; path = Classes/FlipsideViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* DelSol_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelSol_Prefix.pch; sourceTree = "<group>"; };
+		4D0ED26A1176700D003F2C04 /* lib3DAR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = lib3DAR.a; sourceTree = "<group>"; };
 		4D362E3D1132F3B800B4724A /* DPad_BG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DPad_BG.png; sourceTree = "<group>"; };
 		4D362E3E1132F3B800B4724A /* 64_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 64_white.png; sourceTree = "<group>"; };
 		4D362E3F1132F3B800B4724A /* 128_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 128_white.png; sourceTree = "<group>"; };
@@ -255,7 +256,6 @@
 		4D5ABF6D114325C200F689D2 /* SphereView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SphereView.mm; sourceTree = "<group>"; };
 		4D5ABF6E114325C200F689D2 /* TexturedGeometryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TexturedGeometryView.h; sourceTree = "<group>"; };
 		4D5ABF6F114325C200F689D2 /* TexturedGeometryView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TexturedGeometryView.mm; sourceTree = "<group>"; };
-		4DDFD220115F4F6C00F7831B /* SM3DARLibary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = SM3DARLibary.a; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* DelSol-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DelSol-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -272,7 +272,7 @@
 				4D59E67C1130B33C00AD04A7 /* QuartzCore.framework in Frameworks */,
 				4D59E68A1130B3C400AD04A7 /* MapKit.framework in Frameworks */,
 				4D5ABF8A114325C200F689D2 /* libGHUnitIPhone2_1.a in Frameworks */,
-				4DDFD221115F4F6C00F7831B /* SM3DARLibary.a in Frameworks */,
+				4D0ED26B1176700D003F2C04 /* lib3DAR.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,7 +379,7 @@
 		4D59E6591130B28B00AD04A7 /* SM3DAR */ = {
 			isa = PBXGroup;
 			children = (
-				4DDFD220115F4F6C00F7831B /* SM3DARLibary.a */,
+				4D0ED26A1176700D003F2C04 /* lib3DAR.a */,
 				4D59E6CE1130B43400AD04A7 /* SM3DAR_keys.txt */,
 				4D59E6CF1130B43400AD04A7 /* bubble1.png */,
 				4D59E6D01130B43400AD04A7 /* compass_rose.png */,

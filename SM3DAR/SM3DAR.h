@@ -11,14 +11,13 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreLocation/CoreLocation.h>
 
-
 @class SM3DAR_PointOfInterest;		
 @class SM3DAR_Session;
 @class SM3DAR_FocusView;
 
 typedef struct
 {
-    CGFloat x, y, z;
+  CGFloat x, y, z;
 } Coord3D;
 
 @protocol SM3DAR_Delegate;
@@ -95,8 +94,9 @@ typedef NSObject<SM3DAR_PointProtocol> SM3DAR_Point;
 @property (nonatomic, assign) CLLocation *currentLocation;
 @property (nonatomic, retain) CLLocationManager *locationManager;
 
-+ (SM3DAR_Controller*)sharedSM3DAR_Controller;
++ (SM3DAR_Controller*)sharedController;
 + (SM3DAR_Controller*)reinit;
++ (void)printMemoryUsage:(NSString*)message;
 - (void)forceRelease;
 - (void)addPoint:(SM3DAR_Point*)point;
 - (void)addPointOfInterest:(SM3DAR_Point*)point;
@@ -112,6 +112,8 @@ typedef NSObject<SM3DAR_PointProtocol> SM3DAR_Point;
 - (void)loadMarkersFromCSVFile:(NSString*)fileName hasHeader:(BOOL)hasHeader;
 - (void)loadMarkersFromCSV:(NSString*)csv hasHeader:(BOOL)hasHeader;
 - (SM3DAR_PointOfInterest*)initPointOfInterest:(NSDictionary*)properties;
+- (SM3DAR_PointOfInterest*)initPointOfInterest:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude altitude:(CGFloat)altitude title:(NSString*)poiTitle subtitle:(NSString*)poiSubtitle markerViewClass:(Class)poiMarkerViewClass properties:(NSDictionary*)properties;
+- (void)addPointOfInterestWithLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude altitude:(CGFloat)altitude title:(NSString*)poiTitle subtitle:(NSString*)poiSubtitle markerViewClass:(Class)poiMarkerViewClass properties:(NSDictionary*)properties;
 - (void)changeCurrentLocation:(CLLocation*)newLocation;
 - (BOOL)displayPoint:(SM3DAR_Point*)poi;
 - (void)startCamera;
@@ -203,7 +205,7 @@ typedef NSObject<SM3DAR_PointProtocol> SM3DAR_Point;
 @property (nonatomic, retain) SM3DAR_Point *point;
 
 - (void) buildView;
-- (CGAffineTransform) rangeScaleTransformation;
+- (CGAffineTransform) pointTransform;
 - (void) didReceiveFocus;
 - (void) didLoseFocus;
 - (void) resizeFrameAround:(UIView*)targetView;
@@ -291,3 +293,24 @@ typedef NSObject<SM3DAR_PointProtocol> SM3DAR_Point;
 - (void) displayFilledWithTexture:(Texture*)texture;
 - (void) displayShaded;
 @end
+
+
+//
+//
+//
+@interface SM3DAR_CustomAnnotationView : MKAnnotationView { 
+}
+@property (nonatomic, retain) NSString *imageName;
+@property (nonatomic, retain) SM3DAR_PointOfInterest *poi;
+@end
+
+
+#define SM3DAR_POI_LATITUDE @"latitude"
+#define SM3DAR_POI_ALTITUDE @"altitude"
+#define SM3DAR_POI_LONGITUDE @"longitude"
+#define SM3DAR_POI_TITLE @"title"
+#define SM3DAR_POI_SUBTITLE @"subtitle"
+#define SM3DAR_POI_URL @"url"
+#define SM3DAR_POI_VIEW_CLASS_NAME @"view_class_name"
+#define SM3DAR_POI_DEFAULT_VIEW_CLASS_NAME @"SM3DAR_IconMarkerView"
+
