@@ -49,11 +49,24 @@
     [self.view addSubview:joystick];
     
     [NSTimer scheduledTimerWithTimeInterval:0.10f target:self selector:@selector(updateJoystick) userInfo:nil repeats:YES];    
+
+    [self.view becomeFirstResponder];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];  
-    
+    [self becomeFirstResponder];    
+}
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+	[super motionBegan: motion withEvent: event];
+	if (motion == UIEventSubtypeMotionShake) {
+        [self createSphereAtOrigin];
+    }
 }
 
 - (SM3DAR_PointOfInterest*)addPOI:(NSString*)title latitude:(CLLocationDegrees)lat longitude:(CLLocationDegrees)lon  canReceiveFocus:(BOOL)canReceiveFocus {
@@ -124,9 +137,13 @@
 }
 
 - (void)loadPointsOfInterest {
-    // add point
     SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController]; 
+
+    // let there be light
+    Coord3D sunCoord = [sm3dar solarPositionScaled:800.0f];
+    self.sun = [self billboardAtCoordinate:sunCoord imageName:@"sun.jpg"];    
     
+    // add point
     CLLocationCoordinate2D currentLoc = [sm3dar currentLocation].coordinate;
     CLLocationDegrees lat=currentLoc.latitude;
     CLLocationDegrees lon=currentLoc.longitude;
@@ -137,13 +154,7 @@
     [self addPOI:@"W" latitude:lat longitude:(lon-0.01f) canReceiveFocus:NO];
 
     // create the initial sphere
-	Coord3D coord = { 0, 0, 0 };
-    NSString *textureName = nil;
-    self.point = [self sphereAtCoordinate:coord textureName:textureName];
-
-    // let there be light
-    Coord3D sunCoord = [sm3dar solarPositionScaled:800.0f];
-    self.sun = [self billboardAtCoordinate:sunCoord imageName:@"sun.jpg"];
+    [self createSphereAtOrigin];
 
     // activate the joystick
     [NSTimer scheduledTimerWithTimeInterval:0.10f target:self selector:@selector(moveObject) userInfo:nil repeats:YES];    
@@ -285,8 +296,16 @@ static CGPoint applyVelocity(CGPoint velocity, CGPoint position, float delta){
         // add texture
         [sphereView setTextureWithImageNamed:TEXTURE_NAME];
     }
-    
+
 }
+
+- (void)createSphereAtOrigin {
+    NSLog(@"Creating sphere at origin");
+	Coord3D coord = { 0, 0, 0 };
+    NSString *textureName = nil;
+    self.point = [self sphereAtCoordinate:coord textureName:textureName];    
+}
+
 
 
 @end
