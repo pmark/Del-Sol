@@ -98,6 +98,31 @@
     return sphere;
 }
 
+- (SM3DAR_Fixture*)billboardAtCoordinate:(Coord3D)coord imageName:(NSString*)imageName {
+    
+    UIImage *img = [UIImage imageNamed:imageName];
+    UIImageView *iv = [[UIImageView alloc] initWithImage:img];
+    
+    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController]; 
+    
+    // create point
+    SM3DAR_Fixture *fixture = [self fixtureAtCoordinate:coord];
+    
+    // give point a view
+    SM3DAR_PointView *billboard = [[SM3DAR_PointView alloc] initWithFrame:
+                                   CGRectMake(0, 0, img.size.width, img.size.height)];
+    
+    [billboard addSubview:iv];
+    [iv release];
+    
+    fixture.view = billboard;  
+    [sm3dar addPoint:fixture];
+    [billboard release];
+    
+    NSLog(@"Added billboard at %.1f, %.1f, %.1f", coord.x, coord.y, coord.z);
+    return fixture;
+}
+
 - (void)loadPointsOfInterest {
     // add point
     SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController]; 
@@ -117,8 +142,8 @@
     self.point = [self sphereAtCoordinate:coord textureName:textureName];
 
     // let there be light
-    Coord3D sunCoord = [sm3dar solarPositionScaled:1200.0f];
-    self.sun = [self sphereAtCoordinate:sunCoord textureName:LATEST_SUN_URL];
+    Coord3D sunCoord = [sm3dar solarPositionScaled:800.0f];
+    self.sun = [self billboardAtCoordinate:sunCoord imageName:@"sun.jpg"];
 
     // activate the joystick
     [NSTimer scheduledTimerWithTimeInterval:0.10f target:self selector:@selector(moveObject) userInfo:nil repeats:YES];    

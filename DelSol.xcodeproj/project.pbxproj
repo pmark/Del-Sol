@@ -92,6 +92,7 @@
 		4D5ABF9F114325C200F689D2 /* RoundedLabelMarkerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ABF6B114325C200F689D2 /* RoundedLabelMarkerView.m */; };
 		4D5ABFA0114325C200F689D2 /* SphereView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ABF6D114325C200F689D2 /* SphereView.mm */; };
 		4D5ABFA1114325C200F689D2 /* TexturedGeometryView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4D5ABF6F114325C200F689D2 /* TexturedGeometryView.mm */; };
+		4DD44FB9117E275200CE3A47 /* sun.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4DD44FB8117E275200CE3A47 /* sun.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -256,6 +257,7 @@
 		4D5ABF6D114325C200F689D2 /* SphereView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SphereView.mm; sourceTree = "<group>"; };
 		4D5ABF6E114325C200F689D2 /* TexturedGeometryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TexturedGeometryView.h; sourceTree = "<group>"; };
 		4D5ABF6F114325C200F689D2 /* TexturedGeometryView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TexturedGeometryView.mm; sourceTree = "<group>"; };
+		4DD44FB8117E275200CE3A47 /* sun.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sun.jpg; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* DelSol-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DelSol-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -347,6 +349,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4DD44FB8117E275200CE3A47 /* sun.jpg */,
 				4D479707115F443B00F5751B /* sun2.png */,
 				4D362E3D1132F3B800B4724A /* DPad_BG.png */,
 				4D362E3E1132F3B800B4724A /* 64_white.png */,
@@ -747,6 +750,7 @@
 				4D5ABF8B114325C200F689D2 /* RunTests.sh in Resources */,
 				4D5ABF8C114325C200F689D2 /* CREDITS in Resources */,
 				4D479708115F443B00F5751B /* sun2.png in Resources */,
+				4DD44FB9117E275200CE3A47 /* sun.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

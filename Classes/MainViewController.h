@@ -27,4 +27,7 @@
 - (IBAction)showInfo;
 - (IBAction)toggleMode:(UIButton*)button;
 
+- (SM3DAR_Fixture*)sphereAtCoordinate:(Coord3D)coord textureName:(NSString*)textureName;
+- (SM3DAR_Fixture*)billboardAtCoordinate:(Coord3D)coord imageName:(NSString*)imageName;
+
 @end
