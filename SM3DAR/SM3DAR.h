@@ -11,13 +11,15 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreLocation/CoreLocation.h>
 
+#define SM3DAR [SM3DAR_Controller sharedController]
+
 @class SM3DAR_PointOfInterest;		
 @class SM3DAR_Session;
 @class SM3DAR_FocusView;
 
 typedef struct
 {
-  CGFloat x, y, z;
+    CGFloat x, y, z;
 } Coord3D;
 
 @protocol SM3DAR_Delegate;
@@ -85,6 +87,7 @@ typedef NSObject<SM3DAR_PointProtocol> SM3DAR_Point;
 @property (nonatomic, assign) Class markerViewClass;
 @property (nonatomic, retain) NSString *mapAnnotationImageName;
 @property (nonatomic, retain) NSObject<SM3DAR_FocusDelegate> *focusView;
+@property (nonatomic, assign) CGFloat screenOrientationRadians;
 @property (nonatomic, assign) CGFloat nearClipMeters;
 @property (nonatomic, assign) CGFloat farClipMeters;
 @property (assign) NSTimeInterval locationUpdateInterval;
@@ -93,6 +96,9 @@ typedef NSObject<SM3DAR_PointProtocol> SM3DAR_Point;
 @property (nonatomic, retain) UIButton *iconLogo;
 @property (nonatomic, assign) CLLocation *currentLocation;
 @property (nonatomic, retain) CLLocationManager *locationManager;
+@property (nonatomic, assign) CGFloat currentYaw;
+@property (nonatomic, assign) CGFloat currentPitch;
+@property (nonatomic, assign) CGFloat currentRoll;
 
 + (SM3DAR_Controller*)sharedController;
 + (SM3DAR_Controller*)reinit;
@@ -138,7 +144,8 @@ typedef NSObject<SM3DAR_PointProtocol> SM3DAR_Point;
 - (void)annotateMap;
 - (void)centerMapOnCurrentLocation;
 - (Coord3D)solarPosition;
-- (Coord3D) solarPositionScaled:(CGFloat)meters;
+- (Coord3D)solarPositionScaled:(CGFloat)meters;
+- (void)initOrigin;
 @end
 
 
@@ -289,6 +296,7 @@ typedef NSObject<SM3DAR_PointProtocol> SM3DAR_Point;
 
 + (Geometry*) newOBJFromResource:(NSString*)resource;
 + (void) displaySphereWithTexture:(Texture*)texture;
++ (void) displayHemisphereWithTexture:(Texture*)texture;
 - (void) displayWireframe;
 - (void) displayFilledWithTexture:(Texture*)texture;
 - (void) displayShaded;

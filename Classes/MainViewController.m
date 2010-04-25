@@ -11,14 +11,20 @@
 #import "SphereView.h"
 #import "RoundedLabelMarkerView.h"
 
+#define DEG2RAD(A)			((A) * 0.01745329278)
+#define RAD2DEG(A)			((A) * 57.2957786667)
+
 #define BTN_MODE_MOVE @"Moving"
 #define BTN_MODE_VIEW @"Viewing"
 
 #define DS_PI 3.14159265359f
 #define DS_RAD2DEG 180.0f/DS_PI
 #define DS_DEG2RAD DS_PI/180.0f
+#define PLACEHOLDER_TAG 12345
+#define VIEW_TAG_BASE 10000
+#define ALTITUDE_INTERVAL_METERS 10
 
-#define MAX_SPEED 100.0f
+#define MAX_SPEED 200.0f
 #define TEXTURE_NAME @"sphere_texture1.png"
 
 // see http://sohowww.nascom.nasa.gov/data/realtime-images.html
@@ -28,21 +34,67 @@
 
 @synthesize point, sun, joystick;
 
+// context aware
+// semantic web
+// senser nets
+// ambient computing
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         // Custom initialization
+        urls = [[NSArray alloc] initWithObjects:
+				@"http://bordertownlabs.com/spotmetrix/clocks/canvas_clock.html",
+                @"http://m.flickr.com/#/photos/pmark/",
+                @"http://bordertownlabs.com/spotmetrix/google_docs.png",
+                @"http://media.chikuyonok.ru/ambilight/",
+                nil];
+        urlIndex = 0;
+        
+        panos = [[NSArray alloc] initWithObjects:
+                 @"nakano-broadway.jpg",
+                 @"international-forum.jpg",
+                 @"tube-and-sushi.jpg",
+                 @"gate-of-narita-san.jpg",
+                nil];
+        panoIndex = 0;
+        
+        placeholders = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
+- (NSString*) keyForWebView:(UIWebView*)wv {
+    return [NSString stringWithFormat:@"%i", [wv hash]];
+}
+
+- (UIWebView*)initWebView {
+    NSString *url = [urls objectAtIndex:urlIndex++];
+    if (urlIndex >= [urls count])
+        urlIndex = 0;
+    
+    UIWebView *wv = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 240)];
+    [wv loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
+    wv.scalesPageToFit = YES;
+    wv.opaque = NO;
+    wv.backgroundColor = [UIColor clearColor];
+    wv.hidden = NO;
+    wv.delegate = self;
+    [self.view addSubview:wv];
+    [wv release];
+    
+    return wv;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController];
+    self.view.multipleTouchEnabled = YES;
+    
+    SM3DAR_Controller *sm3dar = SM3DAR;
+    sm3dar.farClipMeters = 100000.0;
     sm3dar.delegate = self;
-    [self.view addSubview:sm3dar.view];  
-    [self.view sendSubviewToBack:sm3dar.view];
+    [self.view addSubview:sm3dar.view];    
+    sm3dar.view.backgroundColor = [UIColor blackColor];
     
     self.joystick = [[[Joystick alloc] initWithBackground:[UIImage imageNamed:@"128_white.png"]] autorelease];
     joystick.center = CGPointMake(160, 406);
@@ -62,10 +114,32 @@
     return YES;
 }
 
+- (BOOL)selectedPointIsAtOrigin {
+    Coord3D coord = self.point.worldPoint;
+    return (coord.x == 0.0 && coord.y == 0.0 && coord.z == 0.0);
+}
+
+- (void)useWand {
+    switch (wandType) {
+        case WandTypeSphere:
+            [self createSphere];
+            break;
+        case WandTypeImage:
+            [self createImage];
+            break;
+        case WandTypeWeb:
+            [self createWebView];
+            break;
+        default:
+            [self createSphere];
+            break;
+    }
+}
+
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
 	[super motionBegan: motion withEvent: event];
-	if (motion == UIEventSubtypeMotionShake) {
-        [self createSphereAtOrigin];
+	if (motion == UIEventSubtypeMotionShake) {        
+        [self useWand];
     }
 }
 
@@ -111,11 +185,7 @@
     return sphere;
 }
 
-- (SM3DAR_Fixture*)billboardAtCoordinate:(Coord3D)coord imageName:(NSString*)imageName {
-    
-    UIImage *img = [UIImage imageNamed:imageName];
-    UIImageView *iv = [[UIImageView alloc] initWithImage:img];
-    
+- (SM3DAR_Fixture*)billboardAtCoordinate:(Coord3D)coord view:(UIView*)billboardView {
     SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController]; 
     
     // create point
@@ -123,10 +193,11 @@
     
     // give point a view
     SM3DAR_PointView *billboard = [[SM3DAR_PointView alloc] initWithFrame:
-                                   CGRectMake(0, 0, img.size.width, img.size.height)];
+                                   CGRectMake(0, 0, 
+                                              billboardView.bounds.size.width, 
+                                              billboardView.bounds.size.height)];
     
-    [billboard addSubview:iv];
-    [iv release];
+    [billboard addSubview:billboardView];
     
     fixture.view = billboard;  
     [sm3dar addPoint:fixture];
@@ -140,8 +211,18 @@
     SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController]; 
 
     // let there be light
-    Coord3D sunCoord = [sm3dar solarPositionScaled:800.0f];
-    self.sun = [self billboardAtCoordinate:sunCoord imageName:@"sun.jpg"];    
+    UIImage *img = [UIImage imageNamed:@"sun.jpg"];
+    UIImageView *iv = [[UIImageView alloc] initWithImage:img];
+    
+    Coord3D sunCoord = [sm3dar solarPositionScaled:200.0f];
+//    Coord3D sunCoord = {
+//        -100,
+//        -200,
+//        1000
+//    };
+
+    self.sun = [self billboardAtCoordinate:sunCoord view:iv];
+    [iv release];
     
     // add point
     CLLocationCoordinate2D currentLoc = [sm3dar currentLocation].coordinate;
@@ -154,7 +235,7 @@
     [self addPOI:@"W" latitude:lat longitude:(lon-0.01f) canReceiveFocus:NO];
 
     // create the initial sphere
-    [self createSphereAtOrigin];
+    //    [self createSphere];
 
     // activate the joystick
     [NSTimer scheduledTimerWithTimeInterval:0.10f target:self selector:@selector(moveObject) userInfo:nil repeats:YES];    
@@ -242,6 +323,9 @@
     [point release];
     [sun release];
     [joystick release];
+    [webView release];
+    [urls release];
+    [placeholders release];
     [super dealloc];
 }
 
@@ -276,15 +360,25 @@ static CGPoint applyVelocity(CGPoint velocity, CGPoint position, float delta){
     
     CGFloat xspeed = joystick.velocity.x * MAX_SPEED;
     CGFloat yspeed = joystick.velocity.y * MAX_SPEED;
-    
+
+//    double yawDegrees = SM3DAR.currentYaw;
+//    double yawRadians = DEG2RAD(yawDegrees);
+//    xspeed *= sin(yawRadians);
+//    yspeed *= cos(yawRadians);
+
     if (abs(xspeed) > 0.0 || abs(yspeed) > 0.0) {
         [point translateX:xspeed Y:-yspeed Z:0];
-        point.view.transform = CGAffineTransformRotate(point.view.transform, (DS_DEG2RAD*10));
     }
 }
 
-- (void) logoWasTapped {
+- (void) elevatePoint {
+    [point translateX:0 Y:0 Z:ALTITUDE_INTERVAL_METERS];
+}
+
+- (void) toggleSphereTexture {
     NSLog(@"toggling texture");
+    
+    if (![point.view isKindOfClass:[SphereView class]]) return;
     
     SphereView *sphereView = (SphereView*)point.view;
     
@@ -296,16 +390,118 @@ static CGPoint applyVelocity(CGPoint velocity, CGPoint position, float delta){
         // add texture
         [sphereView setTextureWithImageNamed:TEXTURE_NAME];
     }
-
 }
 
-- (void)createSphereAtOrigin {
+- (void) logoWasTapped {
+    //[self toggleSphereTexture];    
+    
+    // change what happens on shake
+    wandType++;
+
+    if (wandType > WAND_TYPE_COUNT) 
+        wandType = 0;
+    
+    NSLog(@"New wand type: %i", wandType);
+}
+
+- (void)createWebView {
+    NSLog(@"Creating webview at origin");
+    Coord3D origin = [self spawnPoint];
+    
+    UIWebView *wv = [self initWebView];
+
+    UIImage *img = [UIImage imageNamed:@"spiderweb_320x320.png"];
+    UIImageView *placeholder = [[UIImageView alloc] initWithImage:img];
+    NSLog(@"adding placeholder with tag %i", placeholder.tag);
+    SM3DAR_Fixture *pf = [self billboardAtCoordinate:origin view:placeholder];
+    NSString *key = [self keyForWebView:wv];
+    [placeholders setValue:pf forKey:key];    
+    
+    self.point = [self billboardAtCoordinate:origin view:wv];
+    //[wv release];
+    
+    CGFloat shrinker = 0.1;
+
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:1.0];
+    [UIView setAnimationRepeatCount:100000];
+    [UIView setAnimationRepeatAutoreverses:YES];
+    
+    placeholder.transform = CGAffineTransformConcat(CGAffineTransformMakeScale(0.75, shrinker), 
+                                                    CGAffineTransformMakeRotation(179));
+    
+    [UIView commitAnimations];
+}
+
+- (void)createSphere {
     NSLog(@"Creating sphere at origin");
-	Coord3D coord = { 0, 0, 0 };
-    NSString *textureName = nil;
-    self.point = [self sphereAtCoordinate:coord textureName:textureName];    
+    NSString *textureName = [panos objectAtIndex:panoIndex++];
+    if (panoIndex >= [panos count]) {
+        panoIndex = 0;
+    }
+        
+    self.point = [self sphereAtCoordinate:[self spawnPoint] textureName:textureName];    
 }
 
+- (void)createImage {
+    NSLog(@"Creating image at origin");
+    UIImage *img = [UIImage imageNamed:@"Icon.png"];
+    UIImageView *iv = [[UIImageView alloc] initWithImage:img];
+    self.point = [self billboardAtCoordinate:[self spawnPoint] view:iv];
+    [iv release];
+}
 
+- (Coord3D)spawnPoint {
+    double yawDegrees = SM3DAR.currentYaw;
+    double scalar = 3000.0;
+
+    // need to correct yaw 
+    double screenRadians = [SM3DAR screenOrientationRadians];
+    double screenDegrees = RAD2DEG(screenRadians);
+    double yawRadians = DEG2RAD(yawDegrees);
+    
+    Coord3D coord = {
+        sin(yawRadians) * scalar,
+    	cos(yawRadians) * scalar,
+        0
+    };
+    
+    NSLog(@"Spawn point (at yaw %.1f, screen %.1f): %.1f, %.1f, %.1f", yawDegrees, screenDegrees, coord.x, coord.y, coord.z);
+    
+    return coord;
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)wv {
+    // display placeholder
+    NSLog(@"webview loading");
+}
+
+- (void)webView:(UIWebView *)wv didFailLoadWithError:(NSError *)error {
+    NSLog(@"webview failed");    
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)wv {
+    NSLog(@"webview finished");
+    NSString *key = [self keyForWebView:wv];
+    SM3DAR_Fixture *pf = (SM3DAR_Fixture*)[placeholders objectForKey:key];    
+    [pf.view removeFromSuperview];
+    [SM3DAR removePointOfInterest:pf];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [touches anyObject];
+    if ([touch tapCount] > 1) {
+        [self useWand];
+    }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSInteger fingers = [[event allTouches] count];
+    if (fingers == 1)
+        [point translateX:0 Y:0 Z:ALTITUDE_INTERVAL_METERS];        
+    else if (fingers == 2)
+        [point translateX:0 Y:0 Z:-ALTITUDE_INTERVAL_METERS];        
+    
+}
 
 @end

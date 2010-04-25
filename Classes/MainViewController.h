@@ -12,12 +12,29 @@
 #import "Dpad.h"
 #import "Joystick.h"
 
+typedef enum {
+    WandTypeWeb,
+    WandTypeSphere,
+    WandTypeImage
+} WandType;
+#define WAND_TYPE_COUNT 3
 
-@interface MainViewController : UIViewController <FlipsideViewControllerDelegate, SM3DAR_Delegate, CLLocationManagerDelegate> {
+@interface MainViewController : UIViewController <FlipsideViewControllerDelegate, SM3DAR_Delegate, CLLocationManagerDelegate, UIWebViewDelegate> {
     SM3DAR_Point *point;
     SM3DAR_Point *sun;
     BOOL moveMode;
     Joystick *joystick;
+    WandType wandType;
+    UIWebView *webView;
+    NSArray *urls;
+    NSInteger urlIndex;
+
+    NSArray *panos;
+    NSInteger panoIndex;
+
+    
+    NSUInteger viewTagIndex;
+    NSMutableDictionary *placeholders;
 }
 
 @property (nonatomic, retain) SM3DAR_Point *point;
@@ -28,7 +45,10 @@
 - (IBAction)toggleMode:(UIButton*)button;
 
 - (SM3DAR_Fixture*)sphereAtCoordinate:(Coord3D)coord textureName:(NSString*)textureName;
-- (SM3DAR_Fixture*)billboardAtCoordinate:(Coord3D)coord imageName:(NSString*)imageName;
-- (void)createSphereAtOrigin;
-
+- (SM3DAR_Fixture*)billboardAtCoordinate:(Coord3D)coord view:(UIView*)billboardView;
+- (void)createWebView;
+- (void)createSphere;
+- (void)createImage;
+- (BOOL)selectedPointIsAtOrigin;
+- (Coord3D)spawnPoint;
 @end

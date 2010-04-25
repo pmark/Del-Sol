@@ -19,7 +19,12 @@
 		289233A70DB2D0840083E9F9 /* MainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A50DB2D0840083E9F9 /* MainView.m */; };
 		289233AE0DB2D0DB0083E9F9 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233A90DB2D0DB0083E9F9 /* MainViewController.m */; };
 		289233B00DB2D0DB0083E9F9 /* FlipsideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */; };
+		4D033BB4117F5FE500519A9B /* spiderweb_320x320.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D033BB3117F5FE500519A9B /* spiderweb_320x320.png */; };
 		4D0ED26B1176700D003F2C04 /* lib3DAR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0ED26A1176700D003F2C04 /* lib3DAR.a */; };
+		4D18614E117F965E00643449 /* nakano-broadway.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4D18614A117F965E00643449 /* nakano-broadway.jpg */; };
+		4D18614F117F965E00643449 /* international-forum.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4D18614B117F965E00643449 /* international-forum.jpg */; };
+		4D186150117F965E00643449 /* tube-and-sushi.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4D18614C117F965E00643449 /* tube-and-sushi.jpg */; };
+		4D186151117F965E00643449 /* gate-of-narita-san.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4D18614D117F965E00643449 /* gate-of-narita-san.jpg */; };
 		4D362E401132F3B800B4724A /* DPad_BG.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D362E3D1132F3B800B4724A /* DPad_BG.png */; };
 		4D362E411132F3B800B4724A /* 64_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D362E3E1132F3B800B4724A /* 64_white.png */; };
 		4D362E421132F3B800B4724A /* 128_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D362E3F1132F3B800B4724A /* 128_white.png */; };
@@ -115,7 +120,12 @@
 		289233AD0DB2D0DB0083E9F9 /* FlipsideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlipsideViewController.m; path = Classes/FlipsideViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* DelSol_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelSol_Prefix.pch; sourceTree = "<group>"; };
+		4D033BB3117F5FE500519A9B /* spiderweb_320x320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spiderweb_320x320.png; sourceTree = "<group>"; };
 		4D0ED26A1176700D003F2C04 /* lib3DAR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = lib3DAR.a; sourceTree = "<group>"; };
+		4D18614A117F965E00643449 /* nakano-broadway.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "nakano-broadway.jpg"; sourceTree = "<group>"; };
+		4D18614B117F965E00643449 /* international-forum.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "international-forum.jpg"; sourceTree = "<group>"; };
+		4D18614C117F965E00643449 /* tube-and-sushi.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "tube-and-sushi.jpg"; sourceTree = "<group>"; };
+		4D18614D117F965E00643449 /* gate-of-narita-san.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "gate-of-narita-san.jpg"; sourceTree = "<group>"; };
 		4D362E3D1132F3B800B4724A /* DPad_BG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DPad_BG.png; sourceTree = "<group>"; };
 		4D362E3E1132F3B800B4724A /* 64_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 64_white.png; sourceTree = "<group>"; };
 		4D362E3F1132F3B800B4724A /* 128_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 128_white.png; sourceTree = "<group>"; };
@@ -349,6 +359,11 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4D18614A117F965E00643449 /* nakano-broadway.jpg */,
+				4D18614B117F965E00643449 /* international-forum.jpg */,
+				4D18614C117F965E00643449 /* tube-and-sushi.jpg */,
+				4D18614D117F965E00643449 /* gate-of-narita-san.jpg */,
+				4D033BB3117F5FE500519A9B /* spiderweb_320x320.png */,
 				4DD44FB8117E275200CE3A47 /* sun.jpg */,
 				4D479707115F443B00F5751B /* sun2.png */,
 				4D362E3D1132F3B800B4724A /* DPad_BG.png */,
@@ -751,6 +766,11 @@
 				4D5ABF8C114325C200F689D2 /* CREDITS in Resources */,
 				4D479708115F443B00F5751B /* sun2.png in Resources */,
 				4DD44FB9117E275200CE3A47 /* sun.jpg in Resources */,
+				4D033BB4117F5FE500519A9B /* spiderweb_320x320.png in Resources */,
+				4D18614E117F965E00643449 /* nakano-broadway.jpg in Resources */,
+				4D18614F117F965E00643449 /* international-forum.jpg in Resources */,
+				4D186150117F965E00643449 /* tube-and-sushi.jpg in Resources */,
+				4D186151117F965E00643449 /* gate-of-narita-san.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
