@@ -10,6 +10,7 @@
 #import "MainView.h"
 #import "SphereView.h"
 #import "RoundedLabelMarkerView.h"
+#import "WireframeGridView.h"
 
 #define DEG2RAD(A)			((A) * 0.01745329278)
 #define RAD2DEG(A)			((A) * 57.2957786667)
@@ -90,7 +91,7 @@
     
     self.view.multipleTouchEnabled = YES;
     
-    SM3DAR_Controller *sm3dar = SM3DAR;
+    sm3dar = SM3DAR;
     sm3dar.farClipMeters = 100000.0;
     sm3dar.delegate = self;
     [self.view addSubview:sm3dar.view];    
@@ -144,17 +145,7 @@
 }
 
 - (SM3DAR_PointOfInterest*)addPOI:(NSString*)title latitude:(CLLocationDegrees)lat longitude:(CLLocationDegrees)lon  canReceiveFocus:(BOOL)canReceiveFocus {
-    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController];
-    NSDictionary *poiProperties = [NSDictionary dictionaryWithObjectsAndKeys: 
-                                   title, @"title",
-                                   @"", @"subtitle",
-                                   @"RoundedLabelMarkerView", @"view_class_name",
-                                   [NSNumber numberWithDouble:lat], @"latitude",
-                                   [NSNumber numberWithDouble:lon], @"longitude",
-                                   sm3dar.currentLocation.altitude, @"altitude",
-                                   nil];
-    
-    SM3DAR_PointOfInterest *poi = [[sm3dar initPointOfInterest:poiProperties] autorelease];    
+    SM3DAR_PointOfInterest *poi = [[sm3dar initPointOfInterest:lat longitude:lon altitude:0 title:title subtitle:@"" markerViewClass:[RoundedLabelMarkerView class] properties:nil] autorelease];    
     poi.canReceiveFocus = canReceiveFocus;
     [sm3dar addPointOfInterest:poi];
     return poi;
@@ -170,8 +161,6 @@
 }
 
 - (SM3DAR_Fixture*)sphereAtCoordinate:(Coord3D)coord textureName:(NSString*)textureName {
-    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController]; 
-
     // create point
     SM3DAR_Fixture *sphere = [self fixtureAtCoordinate:coord];
     
@@ -186,8 +175,7 @@
 }
 
 - (SM3DAR_Fixture*)billboardAtCoordinate:(Coord3D)coord view:(UIView*)billboardView {
-    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController]; 
-    
+
     // create point
     SM3DAR_Fixture *fixture = [self fixtureAtCoordinate:coord];
     
@@ -196,6 +184,8 @@
                                    CGRectMake(0, 0, 
                                               billboardView.bounds.size.width, 
                                               billboardView.bounds.size.height)];
+
+    billboard.point = fixture;
     
     [billboard addSubview:billboardView];
     
@@ -207,9 +197,20 @@
     return fixture;
 }
 
-- (void)loadPointsOfInterest {
-    SM3DAR_Controller *sm3dar = [SM3DAR_Controller sharedController]; 
+- (void)createWireframeGrid {
+    CLLocation *location = sm3dar.currentLocation;
+	SM3DAR_PointOfInterest *grid = [sm3dar initPointOfInterest:location.coordinate.latitude 
+                                                     longitude:location.coordinate.longitude 
+                                                      altitude:location.altitude 
+                                                         title:@"grid" 
+                                                      subtitle:nil 
+                                               markerViewClass:[WireframeGridView class] 
+                                                    properties:nil];
+    grid.canReceiveFocus = NO;
+    [sm3dar addPointOfInterest:grid];
+}
 
+- (void)loadPointsOfInterest {
     // let there be light
     UIImage *img = [UIImage imageNamed:@"sun.jpg"];
     UIImageView *iv = [[UIImageView alloc] initWithImage:img];
@@ -226,8 +227,8 @@
     
     // add point
     CLLocationCoordinate2D currentLoc = [sm3dar currentLocation].coordinate;
-    CLLocationDegrees lat=currentLoc.latitude;
-    CLLocationDegrees lon=currentLoc.longitude;
+    CLLocationDegrees lat = currentLoc.latitude;
+    CLLocationDegrees lon = currentLoc.longitude;
     
     [self addPOI:@"N" latitude:(lat+0.01f) longitude:lon canReceiveFocus:NO];
     [self addPOI:@"S" latitude:(lat-0.01f) longitude:lon canReceiveFocus:NO];
@@ -237,6 +238,8 @@
     // create the initial sphere
     //    [self createSphere];
 
+    //[self createWireframeGrid];
+    
     // activate the joystick
     [NSTimer scheduledTimerWithTimeInterval:0.10f target:self selector:@selector(moveObject) userInfo:nil repeats:YES];    
 }
@@ -355,17 +358,64 @@ static CGPoint applyVelocity(CGPoint velocity, CGPoint position, float delta){
 
 #pragma mark -
 
+- (void) updateJoystick2 {
+    [joystick updateThumbPosition];
+    
+    Coord3D ray = [sm3dar ray:CGPointMake(160, 240)];    
+    Coord3D unitPoint = [point unitVectorFromOrigin];
+    CGPoint rayDiff = CGPointMake(unitPoint.x - ray.x, 
+                                  unitPoint.y - ray.y);
+    
+//    CGFloat rayRadians = atan2(ray.y, ray.x);
+//    CGFloat pointRadians = atan2(point.worldPoint.y, point.worldPoint.x);
+//    CGFloat diffRadians = atan2(rayDiff.y, rayDiff.x);
+    
+    //NSLog(@"rayDiff: %.1f, %.1f : %.1f", rayDiff.x, rayDiff.y, RAD2DEG(diffRadians));
+    
+//    CGFloat relRadians = rayRadians - pointRadians;
+//    CGFloat relDegrees = RAD2DEG(relRadians); 
+//    CGPoint relRay = CGPointMake(cos(relRadians), sin(relRadians));
+//    NSLog(@"Ray:%.1f, Point:%.1f, Rel:%.1f", RAD2DEG(rayRadians), RAD2DEG(pointRadians), relDegrees);
+//    NSLog(@"Point: %.1f, %.1f : %.1f", unitPoint.x, unitPoint.y, RAD2DEG(pointRadians));
+    
+    CGFloat xspeed = (joystick.velocity.x * rayDiff.x) * MAX_SPEED;
+    CGFloat yspeed = (joystick.velocity.y * abs(unitPoint.y)) * MAX_SPEED;
+    
+    if (abs(xspeed) > 0.0 || abs(yspeed) > 0.0) {
+
+        // Joystick angles
+        // Right: 0
+        // Up: 90
+        // Left: 180 / -180
+        // Down: -90
+        //CGFloat joystickDegrees = -RAD2DEG(atan2(joystick.velocity.y, joystick.velocity.x));
+        
+
+        // Ray angles
+        // East: 0
+        // North: 90
+    	// West: 180 / -180
+        // South: -90
+		//NSLog(@"RAY ANGLE: %.2f", rayDegrees);        
+        
+//		NSLog(@"JOYSTICK ANGLE: %.2f", joystickegrees);        
+		//NSLog(@"Translate %.2f, %.2f", xspeed, yspeed);        
+        
+        [point translateX:xspeed Y:-yspeed Z:0];
+    }
+}
+
 - (void) updateJoystick {
     [joystick updateThumbPosition];
     
     CGFloat xspeed = joystick.velocity.x * MAX_SPEED;
     CGFloat yspeed = joystick.velocity.y * MAX_SPEED;
-
-//    double yawDegrees = SM3DAR.currentYaw;
-//    double yawRadians = DEG2RAD(yawDegrees);
-//    xspeed *= sin(yawRadians);
-//    yspeed *= cos(yawRadians);
-
+    
+    //    double yawDegrees = SM3DAR.currentYaw;
+    //    double yawRadians = DEG2RAD(yawDegrees);
+    //    xspeed *= sin(yawRadians);
+    //    yspeed *= cos(yawRadians);
+    
     if (abs(xspeed) > 0.0 || abs(yspeed) > 0.0) {
         [point translateX:xspeed Y:-yspeed Z:0];
     }
@@ -452,11 +502,24 @@ static CGPoint applyVelocity(CGPoint velocity, CGPoint position, float delta){
 }
 
 - (Coord3D)spawnPoint {
-    double yawDegrees = SM3DAR.currentYaw;
+    
     double scalar = 3000.0;
 
+    Coord3D ray = [sm3dar ray:CGPointMake(160, 240)];
+    
+    Coord3D coord = {
+        ray.x * scalar,
+    	ray.y * scalar,
+        0
+    };
+    
+    return coord;
+    
+#if 0    
+    double yawDegrees = sm3dar.currentYaw;
+
     // need to correct yaw 
-    double screenRadians = [SM3DAR screenOrientationRadians];
+    double screenRadians = [sm3dar screenOrientationRadians];
     double screenDegrees = RAD2DEG(screenRadians);
     double yawRadians = DEG2RAD(yawDegrees);
     
@@ -469,6 +532,7 @@ static CGPoint applyVelocity(CGPoint velocity, CGPoint position, float delta){
     NSLog(@"Spawn point (at yaw %.1f, screen %.1f): %.1f, %.1f, %.1f", yawDegrees, screenDegrees, coord.x, coord.y, coord.z);
     
     return coord;
+#endif
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)wv {
@@ -485,7 +549,7 @@ static CGPoint applyVelocity(CGPoint velocity, CGPoint position, float delta){
     NSString *key = [self keyForWebView:wv];
     SM3DAR_Fixture *pf = (SM3DAR_Fixture*)[placeholders objectForKey:key];    
     [pf.view removeFromSuperview];
-    [SM3DAR removePointOfInterest:pf];
+    [sm3dar removePointOfInterest:pf];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {

@@ -35,6 +35,7 @@ typedef enum {
     
     NSUInteger viewTagIndex;
     NSMutableDictionary *placeholders;
+	SM3DAR_Controller *sm3dar;
 }
 
 @property (nonatomic, retain) SM3DAR_Point *point;
